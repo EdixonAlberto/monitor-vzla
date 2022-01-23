@@ -1,0 +1,13 @@
+{
+  "name": "bot-monitor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src"
+  },
+  "dependencies": {
+    "@edixon/concord": "^1.2.6",
+    "instagrapi": "^4.2.1"
+  }
+}
