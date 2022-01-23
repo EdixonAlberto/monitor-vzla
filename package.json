@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node src"
+    "start": "node --pending-deprecation src"
   },
   "dependencies": {
     "@edixon/concord": "^1.2.6",
