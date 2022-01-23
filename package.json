@@ -1,13 +1,17 @@
 {
-  "name": "bot-monitor",
+  "name": "bot-monitor-vzla",
+  "description": "Bot de discord para monitorear el dolar paralelo en Venezuela",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "start": "node src"
   },
   "dependencies": {
     "@edixon/concord": "^1.2.6",
     "instagrapi": "^4.2.1"
+  },
+  "engines": {
+    "node": ">=14.18.2",
+    "yarn": "~1.22.0"
   }
 }
