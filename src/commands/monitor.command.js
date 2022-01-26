@@ -8,7 +8,7 @@ module.exports.monitor = async ({ response }) => {
   response.embeded({
     header: {
       text: 'Monitor Dolar',
-      url
+      url: `https://www.instagram.com/${account}`
     },
     imageHeader: avatar,
     body: [
@@ -26,8 +26,12 @@ module.exports.monitor = async ({ response }) => {
         title: 'Hora',
         content: price.time,
         fieldType: 'column'
+      },
+      {
+        title: 'Fuente',
+        content: `[Publicacion en Instagram](${url})`
       }
     ],
-    footer: `Fecha: ${price.date}  |  Instagram: @${account}`
+    footer: `Fecha: ${price.date}`
   })
 }
