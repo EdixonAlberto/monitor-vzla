@@ -2,9 +2,8 @@ const { MonitorService } = require('../Monitor.service')
 const { IntervalService } = require('../Interval.service')
 
 module.exports.monitor = async ({ response }) => {
-  const TIME_INTERVAL = 60 * 60
   const monitorService = new MonitorService()
-  const interval = new IntervalService(TIME_INTERVAL)
+  const interval = new IntervalService()
 
   try {
     console.log('>> START <<')

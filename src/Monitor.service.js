@@ -1,10 +1,11 @@
 const { Instagrapi } = require('instagrapi')
 
 class MonitorService {
-  usernameIG = 'enparalelovzla'
-  instagrapi
+  usernameIG = ''
+  instagrapi = null
 
   constructor() {
+    this.usernameIG = 'enparalelovzla'
     this.instagrapi = new Instagrapi({
       sessionId: process.env.SESSION_ID
     })
@@ -44,7 +45,7 @@ class MonitorService {
   }
 
   formatPrice(rawData) {
-    const data = rawData.split(' ').map((item) => item.trim())
+    const data = rawData.split(' ').map(item => item.trim())
 
     const price = {
       amount: parseFloat(data[7].replace(',', '.')),
