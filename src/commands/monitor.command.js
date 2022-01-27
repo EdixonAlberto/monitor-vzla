@@ -3,7 +3,7 @@ const { IntervalService } = require('../Interval.service')
 
 module.exports.monitor = async ({ response }) => {
   const monitorService = new MonitorService()
-  const interval = new IntervalService()
+  const interval = new IntervalService(['09:30', '13:30'])
 
   try {
     console.log('>> START <<')

@@ -2,18 +2,12 @@ class IntervalService {
   timeInterval = 0
   updateHours = []
 
-  constructor() {
+  constructor(updateHours) {
     this.timeInterval = 1000 * 60
-    this.updateHours = [
-      {
-        hour: '09:30',
-        executed: false
-      },
-      {
-        hour: '02:30',
-        executed: false
-      }
-    ]
+    this.updateHours = updateHours.map(hour => ({
+      hour,
+      executed: false
+    }))
   }
 
   init(callback) {
@@ -27,12 +21,12 @@ class IntervalService {
           if (!this.updateHours[i].executed) {
             const updateHour = this.updateHours[i].hour
             const updateTime = this.convertHourToTime(updateHour)
-            const currentTime = date.getTime() + 28800000 // Sumar 8 hrs para adecuar el timezone a Vzla
+            const currentTime = date.getTime() - 14400000 // Restar 4 hrs para adecuar el timezone a Vzla
 
-            if (currentTime > updateTime) {
+            if (currentTime >= updateTime) {
               callback()
 
-              if (i === this.updateHours.length) {
+              if (i === this.updateHours.length - 1) {
                 // Reiniciar lista de horas
                 this.updateHours.forEach(updateHour => (updateHour.executed = false))
               } else {
