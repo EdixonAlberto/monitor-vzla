@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node --pending-deprecation src"
+    "start": "node src"
   },
   "dependencies": {
-    "@edixon/concord": "^1.2.6",
+    "@edixon/concord": "^1.5.2",
     "instagrapi": "^4.2.1"
   },
   "engines": {

@@ -18,10 +18,10 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.4.0.tgz#b6488286a1cc7b41b644d7e6086f25a1c1e6f837"
   integrity sha512-zmjq+l/rV35kE6zRrwe8BHqV78JvIh2ybJeZavBi5NySjWXqN3hmmAKg7kYMMXSeiWtSsMoZ/+MQi0DiQWy2lw==
 
-"@edixon/concord@^1.2.6":
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/@edixon/concord/-/concord-1.2.6.tgz#ed8c8874347f4b01cba0c14b6943becb742bbfb1"
-  integrity sha512-86OVS7sc0PD7ZAU/heGQ09IuAih0ttfyraPTmm1rC0pJYMHCYlhNg4ZNOQ4lBQMKHPrBwfSYQy3DwhssMwNLFg==
+"@edixon/concord@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@edixon/concord/-/concord-1.5.2.tgz#888f7037321e01d8f0a2634e9846dd0af379d04e"
+  integrity sha512-lMXYT1QcfzGMrZ5vTS77FtfQIIpf5Odh3JDhWaIpLoS6JAdPOsR2XN3YEtbaNo7HGvtRMe/AqAKSvqO6Bnr9NQ==
   dependencies:
     discord.js "^13.3.1"
     dotenv "^10.0.0"
