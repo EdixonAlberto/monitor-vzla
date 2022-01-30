@@ -1,6 +1,8 @@
 class IntervalService {
   timeInterval = 0
   updateHours = []
+  date = null
+  dailyCycle = true
 
   constructor(updateHours) {
     this.timeInterval = 1000 * 60
@@ -15,27 +17,35 @@ class IntervalService {
 
     try {
       interval = setInterval(async () => {
-        const date = new Date()
+        this.date = new Date()
+        console.log(this.date.toISOString().split('T')[1])
 
-        for (let i = 0; i < this.updateHours.length; i++) {
-          if (!this.updateHours[i].executed) {
-            const updateHour = this.updateHours[i].hour
-            const updateTime = this.convertHourToTime(updateHour)
-            const currentTime = date.getTime() - 14400000 // Restar 4 hrs para adecuar el timezone a Vzla
+        if (this.dailyCycle) {
+          for (let i = 0; i < this.updateHours.length; i++) {
+            const { hour, executed } = this.updateHours[i]
 
-            if (currentTime >= updateTime) {
-              callback()
+            if (!executed) {
+              const updateTime = this.convertHourToTime(hour)
+              const currentTime = this.getTimeVzla()
 
-              if (i === this.updateHours.length - 1) {
-                // Reiniciar lista de horas
-                this.updateHours.forEach(updateHour => (updateHour.executed = false))
-              } else {
+              if (currentTime >= updateTime) {
+                await callback()
+
                 // Recordar que se ejecuto el callback a esta hora
                 this.updateHours[i].executed = true
-              }
+                if (i === this.updateHours.length - 1) this.dailyCycle = false
 
-              break
+                break
+              }
             }
+          }
+        } else {
+          const resetTime = this.convertHourToTime('00:00')
+          const currentTime = this.getTimeVzla()
+
+          if (currentTime >= resetTime) {
+            // Reiniciar lista de horas
+            this.updateHours.forEach(updateHour => (updateHour.executed = false))
           }
         }
       }, this.timeInterval)
@@ -46,11 +56,15 @@ class IntervalService {
   }
 
   convertHourToTime(hour) {
-    let date = new Date()
-    date = date.toISOString().split('T')[0]
+    const date = this.date.toISOString().split('T')[0]
 
     const updateDate = new Date(`${date}T${hour}:00.000Z`)
     return updateDate.getTime()
+  }
+
+  getTimeVzla() {
+    const date = this.date.getTime()
+    return date - 14400000 // Restar 4 hrs para adecuar el timezone a Vzla
   }
 }
 
