@@ -3,6 +3,7 @@ class IntervalService {
   updateHours = []
   date = null
   dailyCycle = true
+  resetTime = 0
 
   constructor(updateHours) {
     this.timeInterval = 1000 * 60
@@ -10,6 +11,8 @@ class IntervalService {
       hour,
       executed: false
     }))
+    this.date = new Date()
+    this.resetTime = this.getResetTime()
   }
 
   init(callback) {
@@ -18,7 +21,6 @@ class IntervalService {
     try {
       interval = setInterval(async () => {
         this.date = new Date()
-        console.log(this.date.toISOString().split('T')[1])
 
         if (this.dailyCycle) {
           for (let i = 0; i < this.updateHours.length; i++) {
@@ -40,12 +42,15 @@ class IntervalService {
             }
           }
         } else {
-          const resetTime = this.convertHourToTime('00:00')
           const currentTime = this.getTimeVzla()
 
-          if (currentTime >= resetTime) {
+          if (currentTime >= this.resetTime) {
+            console.log('RESET', new Date(currentTime).toISOString().split('T')[1])
+
             // Reiniciar lista de horas
             this.updateHours.forEach(updateHour => (updateHour.executed = false))
+            this.dailyCycle = true
+            this.resetTime = this.getResetTime()
           }
         }
       }, this.timeInterval)
@@ -56,15 +61,25 @@ class IntervalService {
   }
 
   convertHourToTime(hour) {
-    const date = this.date.toISOString().split('T')[0]
+    const time = this.getTimeVzla()
+    const date = new Date(time)
 
-    const updateDate = new Date(`${date}T${hour}:00.000Z`)
-    return updateDate.getTime()
+    const partialDate = date.toISOString().split('T')[0]
+    const updatedDate = new Date(`${partialDate}T${hour}:00.000Z`)
+
+    return updatedDate.getTime()
   }
 
   getTimeVzla() {
-    const date = this.date.getTime()
-    return date - 14400000 // Restar 4 hrs para adecuar el timezone a Vzla
+    const time = this.date.getTime()
+    // Restar 4 hrs para adecuar el timezone a Venezuela
+    return time - 14400000
+  }
+
+  getResetTime() {
+    const time = this.convertHourToTime('00:00')
+    // Sumar 24 hrs para obtener el tiempo restante para que se termine el día
+    return time + 86400000
   }
 }
 
