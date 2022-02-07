@@ -6,17 +6,20 @@ module.exports.monitor = async ({ response }) => {
   const interval = new IntervalService(['09:30', '13:30'])
 
   try {
-    console.log('>> START <<')
-    interval.init(notifyPriceUpdated(monitorService, response))
+    await response.general('>> START <<')
+    interval.start(notifyPriceUpdated(monitorService, response))
   } catch (error) {
-    console.error(error.message)
+    console.error(error)
     response.general('>> ERROR <<')
   }
 }
 
 function notifyPriceUpdated(monitor, response) {
   return async () => {
-    const { url, avatar, account, price } = await monitor.getPriceMonitorDollar()
+    const monitorDollar = await monitor.getPriceMonitorDollar()
+    if (!monitorDollar) return
+
+    const { url, avatar, account, price } = monitorDollar
 
     response.embeded({
       header: {

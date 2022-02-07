@@ -5,7 +5,7 @@ class MonitorService {
   instagrapi = null
 
   constructor() {
-    this.usernameIG = 'enparalelovzla'
+    this.usernameIG = 'enparaleloenvzla'
     this.instagrapi = new Instagrapi({
       sessionId: process.env.SESSION_ID
     })
@@ -15,32 +15,39 @@ class MonitorService {
     let postUrl = ''
     let monitorData = ''
 
-    const profile = await this.instagrapi.getProfile(this.usernameIG)
-    const lastPosts = await this.instagrapi.getLastPosts(this.usernameIG)
+    try {
+      const profile = await this.instagrapi.getProfile(this.usernameIG)
+      const lastPosts = await this.instagrapi.getLastPosts(this.usernameIG)
 
-    for (let i = 0; i < lastPosts.length; i++) {
-      const post = lastPosts[i]
+      for (let i = 0; i < lastPosts.length; i++) {
+        const post = lastPosts[i]
 
-      if (!monitorData) {
-        const content = post.content
+        if (!monitorData) {
+          const content = post.content
 
-        if (content) {
-          const start = content.search(/\nActualización:/)
+          if (content) {
+            const start = content.search(/🗓️/)
 
-          if (start > -1) {
-            postUrl = post.postUrl
-            const end = content.search(`\n@${this.usernameIG}`)
-            monitorData = content.substring(start + 19, end - 4)
+            if (start > -1) {
+              postUrl = post.postUrl
+              const end = content.search(/\n(@|#)/)
+              monitorData = content.substring(start, end).trim()
+            }
           }
-        }
-      } else break
-    }
+        } else break
+      }
 
-    return {
-      url: postUrl,
-      account: profile.username,
-      avatar: profile.image.standard,
-      price: this.formatPrice(monitorData)
+      return monitorData
+        ? {
+            url: postUrl,
+            account: profile.username,
+            avatar: profile.image.standard,
+            price: this.formatPrice(monitorData)
+          }
+        : null
+    } catch (error) {
+      console.error('ERROR-GET-PRICE', error.message)
+      return null
     }
   }
 

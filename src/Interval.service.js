@@ -15,7 +15,7 @@ class IntervalService {
     this.resetTime = this.getResetTime()
   }
 
-  init(callback) {
+  start(callback) {
     let interval = 0
 
     try {
@@ -45,8 +45,6 @@ class IntervalService {
           const currentTime = this.getTimeVzla()
 
           if (currentTime >= this.resetTime) {
-            console.log('RESET', new Date(currentTime).toISOString().split('T')[1])
-
             // Reiniciar lista de horas
             this.updateHours.forEach(updateHour => (updateHour.executed = false))
             this.dailyCycle = true
