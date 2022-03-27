@@ -1,13 +1,13 @@
-const { Instagrapi } = require('instagrapi')
+import { Instagrapi } from 'instagrapi'
 
-class MonitorService {
-  usernameIG = ''
-  instagrapi = null
+export class MonitorService {
+  private usernameIG: string = ''
+  private instagrapi: Instagrapi
 
   constructor() {
     this.usernameIG = 'enparaleloenvzla'
     this.instagrapi = new Instagrapi({
-      sessionId: process.env.SESSION_ID
+      sessionId: process.env.SESSION_ID || ''
     })
   }
 
@@ -46,7 +46,7 @@ class MonitorService {
           }
         : null
     } catch (error) {
-      console.error('ERROR-GET-PRICE', error.message)
+      console.error('ERROR-GET-PRICE', (error as Error).message)
       return null
     }
   }
@@ -71,5 +71,3 @@ class MonitorService {
     return price
   }
 }
-
-module.exports = { MonitorService }

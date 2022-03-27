@@ -1,7 +1,8 @@
-const { MonitorService } = require('../Monitor.service')
-const { IntervalService } = require('../Interval.service')
+import { TCommand } from '@edixon/concord'
+import { MonitorService } from '../Monitor.service'
+import { IntervalService } from '../Interval.service'
 
-module.exports.monitor = async ({ response }) => {
+export const monitor: TCommand = async ({ response }) => {
   const monitorService = new MonitorService()
   const interval = new IntervalService(['09:30', '13:30'])
 

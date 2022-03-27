@@ -1,11 +1,11 @@
-class IntervalService {
-  timeInterval = 0
-  updateHours = []
-  date = null
-  dailyCycle = true
-  resetTime = 0
+export class IntervalService {
+  private timeInterval = 0
+  private updateHours: any[] = []
+  private date: Date
+  private dailyCycle = true
+  private resetTime = 0
 
-  constructor(updateHours) {
+  constructor(updateHours: string[]) {
     this.timeInterval = 1000 * 60
     this.updateHours = updateHours.map(hour => ({
       hour,
@@ -16,7 +16,7 @@ class IntervalService {
   }
 
   start(callback) {
-    let interval = 0
+    let interval = setInterval(() => null)
 
     try {
       interval = setInterval(async () => {
@@ -80,5 +80,3 @@ class IntervalService {
     return time + 86400000
   }
 }
-
-module.exports = { IntervalService }

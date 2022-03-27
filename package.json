@@ -4,11 +4,25 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node src"
+    "build": "tsc",
+    "dev": "nodemon --config",
+    "start": "node dist"
+  },
+  "nodemonConfig": {
+    "ext": ".ts,.env",
+    "watch": [
+      "src/*"
+    ],
+    "verbose": false,
+    "exec": "yarn build && yarn start"
   },
   "dependencies": {
     "@edixon/concord": "^1.5.2",
-    "instagrapi": "^4.2.1"
+    "instagrapi": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "typescript": "^4.6.3"
   },
   "engines": {
     "node": ">=14.18.2",
