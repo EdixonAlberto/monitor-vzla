@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "format": "prettier --write src/**/*.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "dev": "nodemon --config",
     "start": "node dist"
   },
@@ -26,6 +26,7 @@
   "devDependencies": {
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
+    "tsc-alias": "^1.6.6",
     "typescript": "^4.6.3"
   },
   "engines": {

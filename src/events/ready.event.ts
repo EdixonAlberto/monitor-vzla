@@ -1,7 +1,7 @@
 import { TEvent } from '@edixon/concord'
 import { BotResponse } from '@edixon/concord/dist/core/BotResponse'
-import { MonitorService } from '../Monitor.service'
-import { IntervalService } from '../Interval.service'
+import { MonitorService } from 'services/Monitor.service'
+import { IntervalService } from 'services/Interval.service'
 
 export const ready: TEvent = async ({ channels }) => {
   const monitorService = new MonitorService()
