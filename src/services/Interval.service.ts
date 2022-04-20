@@ -1,18 +1,30 @@
+import { UpdateHourModel } from 'models/UpdateHour'
+
 export class IntervalService {
   private timeInterval = 0
-  private updateHours: any[] = []
+  private updateHours: Array<{ _id: string; hour: string; executed: boolean }> = []
   private date: Date
   private dailyCycle = true
   private resetTime = 0
 
-  constructor(updateHours: string[]) {
+  constructor(hours: string[]) {
     this.timeInterval = 1000 * 60
-    this.updateHours = updateHours.map(hour => ({
-      hour,
-      executed: false
-    }))
     this.date = new Date()
+    this.initUpdateHours(hours)
     this.resetTime = this.getResetTime()
+  }
+
+  private async initUpdateHours(hours: string[]): Promise<void> {
+    const updateHours = await UpdateHourModel.find({}, { __v: false })
+
+    if (!updateHours.length) {
+      for await (const hour of hours) {
+        const updateHour = new UpdateHourModel({ hour, executed: false })
+
+        await updateHour.save()
+        this.updateHours.push(updateHour)
+      }
+    } else this.updateHours = updateHours
   }
 
   start(callback) {
@@ -23,8 +35,10 @@ export class IntervalService {
         this.date = new Date()
 
         if (this.dailyCycle) {
-          for (let i = 0; i < this.updateHours.length; i++) {
-            const { hour, executed } = this.updateHours[i]
+          const updateHours = await UpdateHourModel.find({}, { __v: false })
+
+          for (let i = 0; i < updateHours.length; i++) {
+            const { hour, executed } = updateHours[i]
 
             if (!executed) {
               const updateTime = this.convertHourToTime(hour)
@@ -33,9 +47,11 @@ export class IntervalService {
               if (currentTime >= updateTime) {
                 await callback()
 
-                // Recordar que se ejecuto el callback a esta hora
-                this.updateHours[i].executed = true
-                if (i === this.updateHours.length - 1) this.dailyCycle = false
+                // Recordar que se ejecutó el callback a esta hora
+                await UpdateHourModel.findByIdAndUpdate(updateHours[i]._id, {
+                  executed: true
+                })
+                if (i === updateHours.length - 1) this.dailyCycle = false
 
                 break
               }
@@ -46,7 +62,7 @@ export class IntervalService {
 
           if (currentTime >= this.resetTime) {
             // Reiniciar lista de horas
-            this.updateHours.forEach(updateHour => (updateHour.executed = false))
+            await UpdateHourModel.updateMany({}, { executed: false })
             this.dailyCycle = true
             this.resetTime = this.getResetTime()
           }

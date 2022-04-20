@@ -17,7 +17,7 @@ export const ready: TEvent = async ({ channels }) => {
   }
 }
 
-function notifyPriceUpdated(monitor: MonitorService, channel: BotResponse) {
+function notifyPriceUpdated(monitor: MonitorService, channel: BotResponse): () => Promise<void> {
   return async () => {
     const monitorDollar = await monitor.getPriceMonitorDollar()
     if (!monitorDollar) return

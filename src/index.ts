@@ -1,6 +1,16 @@
-import { Bot } from '@edixon/concord'
+import { Bot, configLoad } from '@edixon/concord'
+import { DatabaseService } from 'services/Database.service'
 
-new Bot({
-  token: process.env.TOKEN,
-  commandsPath: './dist/commands'
-}).start()
+async function main() {
+  try {
+    await configLoad()
+
+    const database = new DatabaseService()
+    await database.connectDB()
+
+    const bot = new Bot()
+    await bot.start()
+  } catch (_) {}
+}
+
+main()
