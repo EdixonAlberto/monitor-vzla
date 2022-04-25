@@ -7,14 +7,13 @@ export class IntervalService {
   private dailyCycle = true
   private resetTime = 0
 
-  constructor(hours: string[]) {
+  constructor() {
     this.timeInterval = 1000 * 60
     this.date = new Date()
-    this.initUpdateHours(hours)
     this.resetTime = this.getResetTime()
   }
 
-  private async initUpdateHours(hours: string[]): Promise<void> {
+  public async initUpdateHours(hours: string[]): Promise<void> {
     const updateHours = await UpdateHourModel.find({}, { __v: false })
 
     if (!updateHours.length) {
@@ -27,7 +26,7 @@ export class IntervalService {
     } else this.updateHours = updateHours
   }
 
-  start(callback) {
+  public start(callback: () => Promise<void>): void {
     let interval = setInterval(() => null)
 
     try {

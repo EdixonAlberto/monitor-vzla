@@ -10,7 +10,7 @@ export class DatabaseService {
   public async connectDB(): Promise<void> {
     try {
       const db = await mongoose.connect(this.mongodbURI)
-      console.log('DB ->', `Database name: ${db.connection.name}`)
+      console.log('DB ->', `Database connected: ${db.connection.name}`)
     } catch (error) {
       console.error('ERROR-DB ->', (error as Error).message)
       throw null

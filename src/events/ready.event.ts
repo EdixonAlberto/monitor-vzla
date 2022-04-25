@@ -5,11 +5,12 @@ import { IntervalService } from 'services/Interval.service'
 
 export const ready: TEvent = async ({ channels }) => {
   const monitorService = new MonitorService()
-  const interval = new IntervalService(['09:30', '13:30'])
+  const interval = new IntervalService()
   const channel = channels.get('827708188907929673')
 
   try {
     if (channel) {
+      await interval.initUpdateHours(['09:30', '13:30'])
       interval.start(notifyPriceUpdated(monitorService, channel))
     } else throw new Error('Channel "827708188907929673" not found')
   } catch (error) {
