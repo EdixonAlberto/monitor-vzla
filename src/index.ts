@@ -1,16 +1,18 @@
 import { Bot, configLoad } from '@edixon/concord'
-import { DatabaseService } from 'services/Database.service'
+import { WebSocketService } from '@SERVICES/WebSocket.service'
 
 async function main() {
   try {
     await configLoad()
-
-    const database = new DatabaseService()
-    await database.connectDB()
-
+    const ws = new WebSocketService()
     const bot = new Bot()
+
+    ws.run()
     await bot.start()
-  } catch (_) {}
+  } catch (_) {
+    console.error(_)
+    process.exit(0)
+  }
 }
 
 main()

@@ -1,58 +1,58 @@
 import { TEvent } from '@edixon/concord'
-import { BotResponse } from '@edixon/concord/dist/core/BotResponse'
-import { MonitorService } from 'services/Monitor.service'
-import { IntervalService } from 'services/Interval.service'
+import { WebSocketService as ws } from '@SERVICES/WebSocket.service'
 
 export const ready: TEvent = async ({ channels }) => {
-  const monitorService = new MonitorService()
-  const interval = new IntervalService()
-  const channel = channels.get('827708188907929673')
+  const CHANNEL_ID = process.env.CHANNEL_ID as string
+  const channel = channels.get(CHANNEL_ID)
 
-  try {
-    if (channel) {
-      await interval.initUpdateHours(['09:30', '13:30'])
-      interval.start(notifyPriceUpdated(monitorService, channel))
-    } else throw new Error('Channel "827708188907929673" not found')
-  } catch (error) {
-    console.error((error as Error).message)
-  }
-}
+  if (channel) {
+    const query = { qty: 'last', source: 'airtm' }
 
-function notifyPriceUpdated(monitor: MonitorService, channel: BotResponse): () => Promise<void> {
-  return async () => {
-    const monitorDollar = await monitor.getPriceMonitorDollar()
-    if (!monitorDollar) return
+    ws.socket.emit('prices', query)
 
-    const { url, avatar, account, price } = monitorDollar
+    ws.socket.on(`prices:${query.qty}:sources:${query.source}`, ({ data }: TData) => {
+      const { source, currencies, timestamp } = data[0]
+      const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
+      const dateConfig = {
+        locale: 'es-VE',
+        tz: 'America/Caracas'
+      }
+      const date = new Date(timestamp).toLocaleDateString(dateConfig.locale, { timeZone: dateConfig.tz })
+      const hour = new Date(timestamp).toLocaleTimeString(dateConfig.locale, {
+        timeZone: dateConfig.tz,
+        timeStyle: 'short'
+      })
+      const sign = trend.label === 'up' ? '+' : trend.label === 'down' ? '-' : ''
 
-    channel.embeded({
-      header: {
-        text: 'Monitor Dolar',
-        url: `https://www.instagram.com/${account}`
-      },
-      imageHeader: avatar,
-      body: [
-        {
-          title: 'Precio',
-          content: price.amount.toString() + 'Bs',
-          fieldType: 'column'
-        },
-        {
-          title: 'Tendencia',
-          content: price.chg.trend.icon + price.chg.percentage,
-          fieldType: 'column'
-        },
-        {
-          title: 'Hora',
-          content: price.time,
-          fieldType: 'column'
-        },
-        {
-          title: 'Fuente',
-          content: `[@${account}](${url})`
-        }
-      ],
-      footer: `Fecha: ${price.date}`
+      channel.embeded({
+        header: source.name,
+        imageHeader: source.logo,
+        body: [
+          {
+            title: 'Precio',
+            content: `${amount}${source.symbol}`,
+            fieldType: 'column'
+          },
+          {
+            title: 'Tendencia',
+            content: `${trend.emoji} ${sign}${trend.percentage}%`,
+            fieldType: 'column'
+          },
+          {
+            title: 'Hora',
+            content: hour,
+            fieldType: 'column'
+          },
+          {
+            title: 'Fuente',
+            content: `[${source.urlPublic}](${source.urlPublic})`
+          }
+        ],
+        footer: `Fecha: ${date}`
+      })
     })
+  } else {
+    console.error(`Channel "${CHANNEL_ID}" not found`)
+    process.exit(0)
   }
 }
