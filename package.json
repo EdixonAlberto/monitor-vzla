@@ -18,10 +18,8 @@
     "exec": "yarn build && yarn start"
   },
   "dependencies": {
-    "@edixon/concord": "^1.7.1",
-    "@typegoose/typegoose": "^9.7.1",
-    "instagrapi": "^5.0.0",
-    "mongoose": "^6.2.10"
+    "@edixon/concord": "^2.0.0",
+    "socket.io-client": "^4.5.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
