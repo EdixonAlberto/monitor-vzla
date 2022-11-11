@@ -6,11 +6,19 @@ export const ready: TEvent = async ({ channels }) => {
   const channel = channels.get(CHANNEL_ID)
 
   if (channel) {
-    const query = { qty: 'last', source: 'airtm' }
+    const payload = {
+      clientId: ws.socket.id,
+      query: { qty: 'last', source: 'airtm' }
+    }
+    const event = `prices:${payload.query.qty}:sources:${payload.query.source}`
+    const emitPrice = () => {
+      ws.socket.emit('prices', payload)
+      console.log('[WS] - Event emited: "prices"')
+    }
 
-    ws.socket.emit('prices', query)
+    ws.socket.on('connect', () => emitPrice())
 
-    ws.socket.on(`prices:${query.qty}:sources:${query.source}`, ({ data }: TData) => {
+    ws.socket.on(event, ({ data }: TData) => {
       const { source, currencies, timestamp } = data[0]
       const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
       const dateConfig = {
@@ -51,8 +59,10 @@ export const ready: TEvent = async ({ channels }) => {
         footer: `Fecha: ${date}`
       })
     })
+
+    emitPrice()
   } else {
-    console.error(`Channel "${CHANNEL_ID}" not found`)
+    console.error('[ERROR]', `Channel "${CHANNEL_ID}" not found`)
     process.exit(0)
   }
 }

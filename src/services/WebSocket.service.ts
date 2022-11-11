@@ -20,11 +20,11 @@ export class WebSocketService {
 
   events(ws = WebSocketService.socket) {
     ws.on('connect', () => {
-      console.log(`[WS] - Client "${WebSocketService.socket.id}" connected`)
+      console.log(`[WS] - Client connected: "${WebSocketService.socket.id}"`)
     })
 
     ws.on('disconnect', (reason: any) => {
-      console.log(`[WS] - Client disconnected, reason: ${reason}`)
+      console.log(`[WS] - Client disconnected, reason: "${reason}"`)
     })
 
     ws.on('exception', (error: any) => {
