@@ -1,4 +1,5 @@
 import { TEvent } from '@edixon/concord'
+import { BotResponse } from '@edixon/concord/dist/core/BotResponse'
 import { WebSocketService as ws } from '@SERVICES/WebSocket.service'
 
 export const ready: TEvent = async ({ channels }) => {
@@ -8,7 +9,7 @@ export const ready: TEvent = async ({ channels }) => {
   if (channel) {
     const payload = {
       clientId: ws.socket.id,
-      query: { qty: 'last', source: 'airtm' }
+      query: { qty: 'last', source: '' }
     }
     const event = `prices:${payload.query.qty}:sources:${payload.query.source}`
     const emitPrice = () => {
@@ -19,58 +20,9 @@ export const ready: TEvent = async ({ channels }) => {
     ws.socket.on('connect', () => emitPrice())
 
     ws.socket.on(event, ({ data }: TData) => {
-      const { source, currencies, timestamp } = data[0]
-      const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
-      const dateConfig = {
-        locale: 'es-VE',
-        tz: 'America/Caracas'
+      for (const price of data) {
+        sendPriceInChannel(channel, price)
       }
-      const date = new Date(timestamp).toLocaleDateString(dateConfig.locale, {
-        timeZone: dateConfig.tz
-      })
-      const hour = new Date(timestamp).toLocaleTimeString(dateConfig.locale, {
-        timeZone: dateConfig.tz,
-        timeStyle: 'short'
-      })
-      const sign = trend.label === 'up' ? '+' : trend.label === 'down' ? '-' : ''
-
-      channel.embeded({
-        header: source.name,
-        imageHeader: source.logo,
-        body: [
-          {
-            title: 'Precio',
-            content: `${amount}${source.symbol}`,
-            fieldType: 'column'
-          },
-          {
-            title: 'Cambio',
-            content: `${sign}${trend.amount}%`,
-            fieldType: 'column'
-          },
-          {
-            title: 'Tendencia',
-            content: `${trend.emoji} ${sign}${trend.percentage}%`,
-            fieldType: 'column'
-          },
-          {
-            title: 'Hora',
-            content: hour,
-            fieldType: 'column'
-          },
-          {
-            title: 'País',
-            content: source.country,
-            fieldType: 'column'
-          },
-          {
-            title: 'Fuente',
-            content: `[${source.urlPublic}](${source.urlPublic})`,
-            fieldType: 'column'
-          }
-        ],
-        footer: `Fecha: ${date}`
-      })
     })
 
     emitPrice()
@@ -78,4 +30,59 @@ export const ready: TEvent = async ({ channels }) => {
     console.error('[ERROR]', `Channel "${CHANNEL_ID}" not found`)
     process.exit(0)
   }
+}
+
+async function sendPriceInChannel(channel: BotResponse, price: TPrice): Promise<void> {
+  const { source, currencies, timestamp } = price
+  const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
+  const dateConfig = {
+    locale: 'es-VE',
+    tz: 'America/Caracas'
+  }
+  const date = new Date(timestamp).toLocaleDateString(dateConfig.locale, {
+    timeZone: dateConfig.tz
+  })
+  const hour = new Date(timestamp).toLocaleTimeString(dateConfig.locale, {
+    timeZone: dateConfig.tz,
+    timeStyle: 'short'
+  })
+  const sign = trend.label === 'up' ? '+' : trend.label === 'down' ? '-' : ''
+
+  await channel.embeded({
+    header: source.name,
+    imageHeader: source.logo,
+    body: [
+      {
+        title: 'Precio',
+        content: `${amount}${source.symbol}`,
+        fieldType: 'column'
+      },
+      {
+        title: 'Cambio',
+        content: `${sign}${trend.amount}%`,
+        fieldType: 'column'
+      },
+      {
+        title: 'Tendencia',
+        content: `${trend.emoji} ${sign}${trend.percentage}%`,
+        fieldType: 'column'
+      },
+      {
+        title: 'País',
+        content: source.country,
+        fieldType: 'column'
+      },
+      {
+        title: 'Hora',
+        content: hour,
+        fieldType: 'column'
+      },
+      {
+        title: 'Fuente',
+        content: `[${source.urlPublic}](https://${source.urlPublic})`,
+        fieldType: 'column'
+      }
+    ],
+    footer: `Fecha de consulta ${date}`
+  })
 }
