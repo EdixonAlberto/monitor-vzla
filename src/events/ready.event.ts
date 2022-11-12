@@ -25,7 +25,9 @@ export const ready: TEvent = async ({ channels }) => {
         locale: 'es-VE',
         tz: 'America/Caracas'
       }
-      const date = new Date(timestamp).toLocaleDateString(dateConfig.locale, { timeZone: dateConfig.tz })
+      const date = new Date(timestamp).toLocaleDateString(dateConfig.locale, {
+        timeZone: dateConfig.tz
+      })
       const hour = new Date(timestamp).toLocaleTimeString(dateConfig.locale, {
         timeZone: dateConfig.tz,
         timeStyle: 'short'
@@ -42,6 +44,11 @@ export const ready: TEvent = async ({ channels }) => {
             fieldType: 'column'
           },
           {
+            title: 'Cambio',
+            content: `${sign}${trend.amount}%`,
+            fieldType: 'column'
+          },
+          {
             title: 'Tendencia',
             content: `${trend.emoji} ${sign}${trend.percentage}%`,
             fieldType: 'column'
@@ -52,8 +59,14 @@ export const ready: TEvent = async ({ channels }) => {
             fieldType: 'column'
           },
           {
+            title: 'País',
+            content: source.country,
+            fieldType: 'column'
+          },
+          {
             title: 'Fuente',
-            content: `[${source.urlPublic}](${source.urlPublic})`
+            content: `[${source.urlPublic}](${source.urlPublic})`,
+            fieldType: 'column'
           }
         ],
         footer: `Fecha: ${date}`
