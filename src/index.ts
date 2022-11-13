@@ -4,10 +4,10 @@ import { WebSocketService } from '@SERVICES/WebSocket.service'
 async function main() {
   try {
     await configLoad()
-    const ws = new WebSocketService()
+    const webSocket = new WebSocketService()
     const bot = new Bot()
 
-    ws.run()
+    webSocket.run()
     await bot.start()
   } catch (_) {
     console.error(_)

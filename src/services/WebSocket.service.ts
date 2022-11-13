@@ -6,24 +6,17 @@ export class WebSocketService {
 
   constructor() {}
 
-  run() {
-    WebSocketService.socket = io(this.URL_WS, {
-      // path,
-      // transports
-      // auth: {
-      //   token: ''
-      // }
-    })
-
+  public run() {
+    WebSocketService.socket = io(this.URL_WS, {})
     this.events()
   }
 
-  events(ws = WebSocketService.socket) {
+  private events(ws = WebSocketService.socket) {
     ws.on('connect', () => {
-      console.log(`[WS] - Client connected: "${WebSocketService.socket.id}"`)
+      console.log(`[WS] - Client connected: "${ws.id}"`)
     })
 
-    ws.on('disconnect', (reason: any) => {
+    ws.on('disconnect', (reason: string) => {
       console.log(`[WS] - Client disconnected, reason: "${reason}"`)
     })
 

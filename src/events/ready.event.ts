@@ -1,33 +1,35 @@
 import { TEvent } from '@edixon/concord'
 import { BotResponse } from '@edixon/concord/dist/core/BotResponse'
-import { WebSocketService as ws } from '@SERVICES/WebSocket.service'
+import { WebSocketService } from '@SERVICES/WebSocket.service'
 
 export const ready: TEvent = async ({ channels }) => {
   const CHANNEL_ID = process.env.CHANNEL_ID as string
   const channel = channels.get(CHANNEL_ID)
 
   if (channel) {
-    const payload = {
-      clientId: ws.socket.id,
-      query: { qty: 'last', source: '' }
-    }
-    const event = `prices:${payload.query.qty}:sources:${payload.query.source}`
-    const emitPrice = () => {
-      ws.socket.emit('prices', payload)
+    const { socket: ws } = WebSocketService
+    const query = { qty: 'last', source: '' }
+    const event = `prices:${query.qty}:sources:${query.source}`
+
+    const emitPrice = (clientId: string) => {
+      ws.emit('prices', <TPayload>{
+        clientId,
+        query
+      })
       console.log('[WS] - Event emited: "prices"')
     }
 
-    ws.socket.on('connect', () => emitPrice())
+    ws.on('connect', () => emitPrice(ws.id))
 
-    ws.socket.on(event, ({ data }: TData) => {
+    ws.on(event, ({ data }: TData) => {
       for (const price of data) {
         sendPriceInChannel(channel, price)
       }
     })
 
-    emitPrice()
+    if (ws.id) emitPrice(ws.id)
   } else {
-    console.error('[ERROR]', `Channel "${CHANNEL_ID}" not found`)
+    console.error(`[ERROR] - Channel "${CHANNEL_ID}" not found`)
     process.exit(0)
   }
 }
@@ -59,7 +61,7 @@ async function sendPriceInChannel(channel: BotResponse, price: TPrice): Promise<
       },
       {
         title: 'Cambio',
-        content: `${sign}${trend.amount}%`,
+        content: `${sign}${trend.amount}${source.symbol}`,
         fieldType: 'column'
       },
       {
@@ -69,7 +71,10 @@ async function sendPriceInChannel(channel: BotResponse, price: TPrice): Promise<
       },
       {
         title: 'País',
-        content: source.country,
+        content: source.country
+          .split('')
+          .map((l, i) => (i === 0 ? l.toUpperCase() : l))
+          .join(''),
         fieldType: 'column'
       },
       {

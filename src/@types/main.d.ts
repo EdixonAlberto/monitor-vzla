@@ -32,3 +32,8 @@ type TTrend = {
   amount: number
   percentage: number
 }
+
+type TPayload = {
+  clientId: string
+  query: { qty: string; source: string }
+}
