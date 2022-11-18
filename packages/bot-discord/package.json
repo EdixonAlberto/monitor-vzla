@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "nodemon --config",
-    "start": "node dist"
+    "start": "node ../../dist"
   },
   "nodemonConfig": {
     "ext": ".ts,.env",

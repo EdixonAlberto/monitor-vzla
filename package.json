@@ -9,7 +9,9 @@
     "email": "edixonalbertto@gmail.com"
   },
   "scripts": {
-    "format": "prettier --write src/**/*.ts",
+    "format": "prettier --write packages/**/*.ts build/*.js",
+    "build": "node build",
+    "start": "node dist",
     "bot-discord": "yarn workspace bot-discord",
     "bot-telegram": "yarn workspace bot-telegram"
   },
