@@ -1,22 +1,21 @@
 {
-  "name": "bot-monitor-vzla",
-  "description": "Bot de discord para monitorear el dolar paralelo en Venezuela",
+  "name": "monitor-vzla",
+  "description": "Monorepo con diferentes clientes para monitorear el precio del dolar paralelo en Venezuela",
   "version": "1.0.0",
   "license": "UNLICENSED",
+  "private": true,
+  "author": {
+    "name": "Edixon Piña",
+    "email": "edixonalbertto@gmail.com"
+  },
   "scripts": {
     "format": "prettier --write src/**/*.ts",
-    "build": "tsc && tsc-alias",
-    "dev": "nodemon --config",
-    "start": "node dist"
+    "bot-discord": "yarn workspace bot-discord",
+    "bot-telegram": "yarn workspace bot-telegram"
   },
-  "nodemonConfig": {
-    "ext": ".ts,.env",
-    "watch": [
-      "src/*"
-    ],
-    "verbose": false,
-    "exec": "yarn build && yarn start"
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@edixon/concord": "^2.0.0",
     "socket.io-client": "^4.5.3"

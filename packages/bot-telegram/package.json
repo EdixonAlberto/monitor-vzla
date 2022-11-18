@@ -1,0 +1,19 @@
+{
+  "name": "bot-telegram",
+  "description": "Bot de telegram para monitorear el precio del dolar paralelo en Venezuela",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "nodemon --config",
+    "start": "node dist"
+  },
+  "nodemonConfig": {
+    "ext": ".ts,.env",
+    "watch": [
+      "src/*"
+    ],
+    "verbose": false,
+    "exec": "yarn build && yarn start"
+  },
+  "dependencies": {}
+}

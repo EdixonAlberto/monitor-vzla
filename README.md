@@ -1,7 +1,6 @@
-# Bot Monitor Vzla
+# Monitor Vzla
 
-Bot de discord para monitorear el dolar paralelo en Venezuela. Este bot notifica diariamente el precio del dolar
-paralelo obteniendo la información desde diferentes fuentes.
+Monorepo con clientes para monitorear el precio del dolar paralelo en Venezuela.
 
 ## Fuentes
 
@@ -13,11 +12,19 @@ paralelo obteniendo la información desde diferentes fuentes.
 
 [+] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
 
-[-] Cuenta de instagram de Monitor Dolar: [@enparaleloenvzla](https://www.instagram.com/enparaleloenvzla)
+[-] Monitor Dolar: [@enparaleloenvzla](https://www.instagram.com/enparaleloenvzla)
+
+[-] Binance USDT: [binance.com](https://www.binance.com/es)
+
+[-] Otras fuentes...
+
+## Clientes
+
+- Bot de Discord [&#x279c; Readme](./packages/bot-discord/README.md)
 
 ## Tecnologías
 
-El bot hace uso de lo siguiente:
+Los clientes hacen uso de los siguientes frameworks y librerías:
 
 - Node.js
 - TypeScript
