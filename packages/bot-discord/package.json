@@ -16,7 +16,7 @@
     "exec": "yarn build && yarn start"
   },
   "dependencies": {
-    "@edixon/concord": "^2.0.0",
-    "socket.io-client": "^4.5.3"
+    "@monitor/core": "1.0.0",
+    "@edixon/concord": "^2.0.0"
   }
 }

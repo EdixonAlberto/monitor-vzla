@@ -1,6 +1,6 @@
 import { TEvent } from '@edixon/concord'
 import { BotResponse } from '@edixon/concord/dist/core/BotResponse'
-import { WebSocketService } from '@SERVICES/WebSocket.service'
+import { WebSocketService, Types } from '@monitor/core'
 
 export const ready: TEvent = async ({ channels }) => {
   const CHANNEL_ID = process.env.CHANNEL_ID as string
@@ -12,7 +12,7 @@ export const ready: TEvent = async ({ channels }) => {
     const event = `prices:${query.qty}:sources:${query.source}`
 
     const emitPrice = (clientId: string) => {
-      ws.emit('prices', <TPayload>{
+      ws.emit('prices', <Types.Payload>{
         clientId,
         query
       })
@@ -21,7 +21,7 @@ export const ready: TEvent = async ({ channels }) => {
 
     ws.on('connect', () => emitPrice(ws.id))
 
-    ws.on(event, ({ data }: TData) => {
+    ws.on(event, ({ data }: Types.Data) => {
       for (const price of data) {
         sendPriceInChannel(channel, price)
       }
@@ -34,9 +34,10 @@ export const ready: TEvent = async ({ channels }) => {
   }
 }
 
-async function sendPriceInChannel(channel: BotResponse, price: TPrice): Promise<void> {
+async function sendPriceInChannel(channel: BotResponse, price: any): Promise<void> {
   const { source, currencies, timestamp } = price
-  const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
+  const SYMBOL_MONEY = 'USD'
+  const { amount, trend } = currencies.find(({ symbol }) => symbol === SYMBOL_MONEY)!
   const dateConfig = {
     locale: 'es-VE',
     tz: 'America/Caracas'
@@ -70,6 +71,11 @@ async function sendPriceInChannel(channel: BotResponse, price: TPrice): Promise<
         fieldType: 'column'
       },
       {
+        title: 'Moneda',
+        content: SYMBOL_MONEY,
+        fieldType: 'column'
+      },
+      {
         title: 'País',
         content: source.country
           .split('')
@@ -78,16 +84,11 @@ async function sendPriceInChannel(channel: BotResponse, price: TPrice): Promise<
         fieldType: 'column'
       },
       {
-        title: 'Hora',
-        content: hour,
-        fieldType: 'column'
-      },
-      {
         title: 'Fuente',
         content: `[${source.urlPublic}](https://${source.urlPublic})`,
         fieldType: 'column'
       }
     ],
-    footer: `Fecha de consulta ${date}`
+    footer: `Consulta ${date} | ${hour}`
   })
 }

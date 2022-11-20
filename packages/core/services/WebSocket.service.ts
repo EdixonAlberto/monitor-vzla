@@ -1,13 +1,13 @@
 import { io, Socket } from 'socket.io-client'
 
 export class WebSocketService {
-  private URL_WS = process.env.WS_URL as string
+  private WS_URL = process.env.WS_URL as string
   public static socket: Socket
 
   constructor() {}
 
   public run() {
-    WebSocketService.socket = io(this.URL_WS, {})
+    WebSocketService.socket = io(this.WS_URL, {})
     this.events()
   }
 

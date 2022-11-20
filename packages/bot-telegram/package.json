@@ -15,5 +15,11 @@
     "verbose": false,
     "exec": "yarn build && yarn start"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@monitor/core": "1.0.0",
+    "telegraf": "^4.11.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
+  }
 }

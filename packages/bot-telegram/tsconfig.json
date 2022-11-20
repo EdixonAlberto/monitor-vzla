@@ -5,9 +5,9 @@
     "module": "commonjs",
     "rootDir": "src",
     "moduleResolution": "node",
-    "baseUrl": "src",
+    // "baseUrl": "src",
+    // "paths": {},
     "declaration": true,
-    "composite": true,
     "outDir": "../../dist",
     "removeComments": true,
     "esModuleInterop": true,
@@ -15,7 +15,8 @@
     "strict": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": ["../../node_modules/@types", "src/@types"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

@@ -3,21 +3,21 @@
     "target": "ES2016",
     "lib": ["ESNext"],
     "module": "commonjs",
-    "rootDir": "src",
+    "rootDir": ".",
     "moduleResolution": "node",
     "declaration": true,
-    "outDir": "../../dist",
+    "composite": true,
+    "outDir": "dist",
     "removeComments": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
     // "baseUrl": "src",
     // "paths": {},
-    "typeRoots": ["node_modules/@types", "src/@types"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

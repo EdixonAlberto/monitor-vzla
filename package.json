@@ -10,8 +10,11 @@
   },
   "scripts": {
     "format": "prettier --write packages/**/*.ts build/*.js",
+    "clean": "rimraf dist packages/core/dist",
     "build": "node build",
     "start": "node dist",
+    "dev": "yarn clean && yarn core:build && yarn",
+    "core:build": "yarn workspace @monitor/core build",
     "bot-discord": "yarn workspace bot-discord",
     "bot-telegram": "yarn workspace bot-telegram"
   },
@@ -25,6 +28,7 @@
   "devDependencies": {
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
     "tsc-alias": "^1.6.6",
     "typescript": "^4.6.3"
   },
