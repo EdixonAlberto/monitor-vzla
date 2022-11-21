@@ -5,7 +5,20 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && tsc-alias"
+    "build": "tsc && tsc-alias",
+    "dev": "nodemon --config"
+  },
+  "nodemonConfig": {
+    "ext": ".ts",
+    "watch": [
+      "."
+    ],
+    "verbose": false,
+    "exec": "yarn build",
+    "ignore": [
+      "node_modules/",
+      "dist/"
+    ]
   },
   "devDependencies": {
     "socket.io-client": "^4.5.3"

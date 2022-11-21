@@ -5,15 +5,20 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "nodemon --config",
-    "start": "node ../../dist"
+    "start": "node dist"
   },
   "nodemonConfig": {
     "ext": ".ts,.env",
     "watch": [
-      "src/*"
+      "src/*",
+      "../core/*"
     ],
     "verbose": false,
-    "exec": "yarn build && yarn start"
+    "exec": "yarn build && yarn start",
+    "ignore": [
+      "node_modules/",
+      "dist/"
+    ]
   },
   "dependencies": {
     "@monitor/core": "1.0.0",

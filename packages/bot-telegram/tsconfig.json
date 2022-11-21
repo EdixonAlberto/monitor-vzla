@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "target": "es2016",
     "lib": ["ESNext"],
     "module": "commonjs",
     "rootDir": "src",
     "moduleResolution": "node",
-    // "baseUrl": "src",
-    // "paths": {},
     "declaration": true,
-    "outDir": "../../dist",
+    "outDir": "dist",
     "removeComments": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,6 +15,8 @@
     "noImplicitAny": false,
     "noImplicitThis": true,
     "skipLibCheck": true,
+    // "baseUrl": "src",
+    // "paths": {},
     "typeRoots": ["../../node_modules/@types", "src/@types"]
   },
   "include": ["src/**/*.ts"],

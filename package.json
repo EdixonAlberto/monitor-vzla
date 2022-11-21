@@ -9,14 +9,13 @@
     "email": "edixonalbertto@gmail.com"
   },
   "scripts": {
-    "format": "prettier --write packages/**/*.ts build/*.js",
-    "clean": "rimraf dist packages/core/dist",
-    "build": "node build",
-    "start": "node dist",
-    "dev": "yarn clean && yarn core:build && yarn",
-    "core:build": "yarn workspace @monitor/core build",
-    "bot-discord": "yarn workspace bot-discord",
-    "bot-telegram": "yarn workspace bot-telegram"
+    "format": "prettier --write packages/**/*.ts",
+    "clean": "rimraf packages/$PACKAGE_NAME/dist packages/$PACKAGE_NAME/*.tsbuildinfo packages/core/dist packages/core/.tsbuildinfo",
+    "build": "yarn clean && yarn core build && yarn workspace $PACKAGE_NAME build",
+    "start": "node packages/$PACKAGE_NAME/dist",
+    "core": "yarn workspace @monitor/core",
+    "bot-discord:dev": "concurrently \"yarn core dev\" \"yarn workspace bot-discord dev\"",
+    "bot-telegram:dev": "concurrently \"yarn core dev\" \"yarn workspace bot-telegram dev\""
   },
   "workspaces": [
     "packages/*"
@@ -26,6 +25,7 @@
     "socket.io-client": "^4.5.3"
   },
   "devDependencies": {
+    "concurrently": "^7.6.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",

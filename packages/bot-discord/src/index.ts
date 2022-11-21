@@ -5,10 +5,7 @@ async function main() {
   try {
     await configLoad()
     const webSocket = new WebSocketService()
-    const bot = new Bot({
-      eventsPath: '../../dist/events',
-      commandsPath: '../../dist/commands'
-    })
+    const bot = new Bot()
 
     webSocket.run()
     await bot.start()

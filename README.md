@@ -1,26 +1,28 @@
 # Monitor Vzla
 
-Monorepo con clientes para monitorear el precio del dolar paralelo en Venezuela.
+Monorepo con clientes para monitorear el precio del dolar paralelo en Venezuela obteniendo los datos desde diferentes
+fuentes.
 
 ## Fuentes
 
-[+] Dolar Today: [dolartoday.com](https://www.dolartoday.com)
+- [x] Dolar Today: [dolartoday.com](https://www.dolartoday.com)
 
-[+] Airtm: [rates.airtm.io](https://rates.airtm.io)
+- [x] Airtm: [rates.airtm.io](https://rates.airtm.io)
 
-[+] Bcv: [bcv.org.ve](https://www.bcv.org.ve)
+- [x] Bcv: [bcv.org.ve](https://www.bcv.org.ve)
 
-[+] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
+- [x] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
 
-[-] Monitor Dolar: [@enparaleloenvzla](https://www.instagram.com/enparaleloenvzla)
+- [ ] Monitor Dolar: [@enparaleloenvzla](https://www.instagram.com/enparaleloenvzla)
 
-[-] Binance USDT: [binance.com](https://www.binance.com/es)
+- [ ] Binance USDT: [binance.com](https://www.binance.com/es)
 
-[-] Otras fuentes...
+- [ ] Otras fuentes...
 
 ## Clientes
 
-- Bot de Discord [&#x279c; Readme](./packages/bot-discord/README.md)
+- Bot de Discord [&#x279c; Readme](./packages/bot-discord)
+- Bot de Discord [&#x279c; Readme](./packages/bot-telegram)
 
 ## Tecnologías
 
@@ -30,3 +32,4 @@ Los clientes hacen uso de los siguientes frameworks y librerías:
 - TypeScript
 - Socket.io
 - Concord: Framework de Node.js para crear bots de Discord. [&#x279c; NPM](https://npmjs.com/package/@edixon/concord)
+- Telegraf
