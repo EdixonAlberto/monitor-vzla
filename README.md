@@ -13,7 +13,7 @@ fuentes.
 
 - [x] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
 
-- [ ] Monitor Dolar: [@enparaleloenvzla](https://www.instagram.com/enparaleloenvzla)
+- [ ] Monitor Dolar: [@enparaleloenvzla](https://www.instagram.com/enparalelovzla3)
 
 - [ ] Binance USDT: [binance.com](https://www.binance.com/es)
 
@@ -22,7 +22,7 @@ fuentes.
 ## Clientes
 
 - Bot de Discord [&#x279c; Readme](./packages/bot-discord)
-- Bot de Discord [&#x279c; Readme](./packages/bot-telegram)
+- Bot de Telegram [&#x279c; Readme](./packages/bot-telegram)
 
 ## Tecnologías
 
@@ -33,3 +33,7 @@ Los clientes hacen uso de los siguientes frameworks y librerías:
 - Socket.io
 - Concord: Framework de Node.js para crear bots de Discord. [&#x279c; NPM](https://npmjs.com/package/@edixon/concord)
 - Telegraf
+
+## Estructura del Proyecto
+
+![schema](./docs/schema.drawio.png)
