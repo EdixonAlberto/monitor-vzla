@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "Frontend",
+			"path": "."
+		},
+		{
+			"name": "Backend",
+			"path": "../api-monitor-vzla"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"thunder-client.saveToWorkspace": true,
+		"thunder-client.workspaceRelativePath": "../api-monitor-vzla"
+	}
+}
