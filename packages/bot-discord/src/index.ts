@@ -5,7 +5,9 @@ async function main() {
   try {
     await configLoad()
     const webSocket = new WebSocketService()
-    const bot = new Bot()
+    // TODO: Mejorar esto despues
+    const eventsPath = process.env.NODE_ENV === 'production' ? 'packages/bot-discord/dist/events' : undefined
+    const bot = new Bot({ eventsPath })
 
     webSocket.run()
     await bot.start()
