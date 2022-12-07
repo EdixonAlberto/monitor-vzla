@@ -2,6 +2,7 @@ export namespace Types {
   export type Data = {
     response: string
     data: Price[]
+    error?: string
   }
 
   export type Price = {

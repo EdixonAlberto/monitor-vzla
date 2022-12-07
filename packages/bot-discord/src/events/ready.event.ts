@@ -71,24 +71,11 @@ async function sendPriceInChannel(channel: BotResponse, price: any): Promise<voi
         fieldType: 'column'
       },
       {
-        title: 'Moneda',
-        content: SYMBOL_MONEY,
-        fieldType: 'column'
-      },
-      {
-        title: 'País',
-        content: source.country
-          .split('')
-          .map((l, i) => (i === 0 ? l.toUpperCase() : l))
-          .join(''),
-        fieldType: 'column'
-      },
-      {
         title: 'Fuente',
         content: `[${source.urlPublic}](https://${source.urlPublic})`,
         fieldType: 'column'
       }
     ],
-    footer: `Consulta ${date} | ${hour}`
+    footer: `${date}  ${hour}`
   })
 }
