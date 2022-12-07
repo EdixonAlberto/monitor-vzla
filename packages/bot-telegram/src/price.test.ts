@@ -7,6 +7,7 @@ export const price: Types.Price = {
     name: 'En Paralelo Vzla',
     urlPublic: 'https://www.instagram.com/enparalelovzla3',
     logo: 'https://raw.githubusercontent.com/EdixonAlberto/monitor-vzla/main/docs/logos/en-paralelo.png',
+    banner: 'https://raw.githubusercontent.com/EdixonAlberto/monitor-vzla/main/docs/banners/en-paralelo.png',
     symbol: 'Bs',
     type: 'fiat',
     country: 'Venezuela',

@@ -11,6 +11,7 @@ export namespace Types {
       id: string
       name: string
       logo: string
+      banner: string
       urlPublic: string
       type: 'fiat' | 'crypto'
       country: string

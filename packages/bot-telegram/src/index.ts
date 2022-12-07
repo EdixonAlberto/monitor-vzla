@@ -78,8 +78,8 @@ ${date}  ${hour}
   await bot.telegram.sendPhoto(
     chatId,
     {
-      url: source.logo
-      // source: source.logo
+      url: source.banner
+      // source: source.banner
     },
     {
       caption: message,
