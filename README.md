@@ -13,7 +13,7 @@ fuentes.
 
 - [x] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
 
-- [ ] En Paralelo Vzla: [@enparaleloenvzla](https://www.instagram.com/enparalelovzla3)
+- [x] En Paralelo Vzla: [@enparaleloenvzla](https://www.instagram.com/enparalelovzla3)
 
 - [ ] Binance USDT: [binance.com](https://www.binance.com/es)
 
