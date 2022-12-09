@@ -5,7 +5,10 @@ export const price: Types.Price = {
   source: {
     id: '1',
     name: 'En Paralelo Vzla',
-    urlPublic: 'https://www.instagram.com/enparalelovzla3',
+    link: {
+      label: 'dolartoday.com',
+      url: 'https://twitter.com/monitordolarvla'
+    },
     logo: 'https://raw.githubusercontent.com/EdixonAlberto/monitor-vzla/main/docs/logos/en-paralelo.png',
     banner: 'https://raw.githubusercontent.com/EdixonAlberto/monitor-vzla/main/docs/banners/en-paralelo.png',
     symbol: 'Bs',
@@ -16,7 +19,7 @@ export const price: Types.Price = {
   currencies: [
     {
       symbol: 'USD',
-      amount: 15,
+      amount: 15.2,
       trend: {
         label: 'up',
         amount: 0.22,

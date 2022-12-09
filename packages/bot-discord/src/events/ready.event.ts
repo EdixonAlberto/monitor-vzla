@@ -1,6 +1,6 @@
 import { TEvent } from '@edixon/concord'
 import { BotResponse } from '@edixon/concord/dist/core/BotResponse'
-import { WebSocketService, Types } from '@monitor/core'
+import { WebSocketService, Types, DATE_CONFIG } from '@monitor/core'
 
 export const ready: TEvent = async ({ channels }) => {
   const CHANNEL_ID = process.env.CHANNEL_ID as string
@@ -38,15 +38,11 @@ async function sendPriceInChannel(channel: BotResponse, price: any): Promise<voi
   const { source, currencies, timestamp } = price
   const SYMBOL_MONEY = 'USD'
   const { amount, trend } = currencies.find(({ symbol }) => symbol === SYMBOL_MONEY)!
-  const dateConfig = {
-    locale: 'es-VE',
-    tz: 'America/Caracas'
-  }
-  const date = new Date(timestamp).toLocaleDateString(dateConfig.locale, {
-    timeZone: dateConfig.tz
+  const date = new Date(timestamp).toLocaleDateString(DATE_CONFIG.locale, {
+    timeZone: DATE_CONFIG.tz
   })
-  const hour = new Date(timestamp).toLocaleTimeString(dateConfig.locale, {
-    timeZone: dateConfig.tz,
+  const hour = new Date(timestamp).toLocaleTimeString(DATE_CONFIG.locale, {
+    timeZone: DATE_CONFIG.tz,
     timeStyle: 'short'
   })
   const sign = trend.label === 'up' ? '+' : trend.label === 'down' ? '-' : ''
@@ -72,7 +68,7 @@ async function sendPriceInChannel(channel: BotResponse, price: any): Promise<voi
       },
       {
         title: 'Fuente',
-        content: `[${source.urlPublic}](https://${source.urlPublic})`,
+        content: `[${source.link.label}](${source.link.url})`,
         fieldType: 'column'
       }
     ],

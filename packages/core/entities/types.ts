@@ -12,7 +12,10 @@ export namespace Types {
       name: string
       logo: string
       banner: string
-      urlPublic: string
+      link: {
+        label: string
+        url: string
+      }
       type: 'fiat' | 'crypto'
       country: string
       symbol: string
