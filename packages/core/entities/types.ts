@@ -22,8 +22,8 @@ export namespace Types {
       enabled: boolean
     }
     currencies: Currencie[]
-    timestamp: Date
-    createdAt: Date
+    timestamp: string
+    createdAt: string
   }
 
   export type Currencie = {

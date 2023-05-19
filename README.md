@@ -7,11 +7,11 @@ fuentes.
 
 - [x] Dolar Today: [dolartoday.com](https://www.dolartoday.com)
 
-- [x] Airtm: [rates.airtm.io](https://rates.airtm.io)
+- [ ] Airtm: [rates.airtm.io](https://rates.airtm.io)
 
 - [x] Bcv: [bcv.org.ve](https://www.bcv.org.ve)
 
-- [x] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
+- [ ] Local Bitcoins: [localbitcoins.com](https://www.localbitcoins.com)
 
 - [x] En Paralelo Vzla: [@enparaleloenvzla](https://www.instagram.com/enparalelovzla3)
 

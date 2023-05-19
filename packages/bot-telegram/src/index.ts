@@ -5,8 +5,7 @@ import { WebSocketService, Types, DATE_CONFIG } from '@monitor/core'
 async function main() {
   config()
 
-  const CHAT_ID = process.env.CHAT_ID as string
-  const TOKEN = process.env.TOKEN as string
+  const { CHAT_ID, TOKEN } = process.env as { [key: string]: string }
   const webSocketService = new WebSocketService()
   const bot = new Telegraf<MyContext>(TOKEN)
 
@@ -32,72 +31,55 @@ async function main() {
       console.error('[WS]', error)
       return
     }
-
-    // Invertir la lista de precios para que el ultimo mensaje sea el precio de la última fuente
-    const priceList = data.reverse()
-
-    const currentDate = new Date()
-      .toLocaleString(DATE_CONFIG.locale, {
-        timeZone: DATE_CONFIG.tz
-      })
-      .replace(/:\d{2} /, ' ')
-
-    await bot.telegram.sendMessage(
-      CHAT_ID,
-      `A continuación se muestran los precios del dolar paralelo hoy ${currentDate}`,
-      {
-        disable_notification: true
-      }
-    )
-
-    for (const price of priceList) {
-      sendPriceInChannel(bot, CHAT_ID, price)
-    }
+    sendPricesInChannel(bot, CHAT_ID, data)
   })
 
   if (ws.id) emitPrice(ws.id)
 
   // TEST
-  // sendPriceInChannel(bot, CHAT_ID, (await import('./price.test')).price)
+  // const priceList = (await import('./price.test')).prices
+  // sendPricesInChannel(bot, CHAT_ID, priceList)
 }
 
-async function sendPriceInChannel(bot: Telegraf<MyContext>, chatId: string, price: Types.Price): Promise<void> {
-  const MODE_DEV = process.env.NODE_ENV === 'development'
-  const { source, currencies, timestamp } = price
-  const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
-  const date = new Date(timestamp).toLocaleDateString(DATE_CONFIG.locale, {
+async function sendPricesInChannel(bot: Telegraf<MyContext>, chatId: string, priceList: Types.Price[]): Promise<void> {
+  const MODE_DEV: boolean = process.env.NODE_ENV === 'development'
+  const currentDate = new Date().toLocaleString(DATE_CONFIG.locale, {
     timeZone: DATE_CONFIG.tz
   })
-  const hour = new Date(timestamp).toLocaleTimeString(DATE_CONFIG.locale, {
-    timeZone: DATE_CONFIG.tz,
-    timeStyle: 'short'
-  })
-  const sign = trend.label === 'up' ? '+' : trend.label === 'down' ? '-' : ''
+  let message: string = `Precios del dolar paralelo hoy ${currentDate}\n`
 
-  const message = /* markdown */ `
+  // Prepare message
+  for (const price of priceList) {
+    const { source, currencies, timestamp } = price
+    const { amount, trend } = currencies.find(({ symbol }) => symbol === 'USD')!
+    const hour = new Date(timestamp).toLocaleTimeString(DATE_CONFIG.locale, {
+      timeZone: DATE_CONFIG.tz,
+      timeStyle: 'short'
+    })
+    const sign = trend.label === 'up' ? '+' : trend.label === 'down' ? '-' : ''
+
+    message += /* markdown */ `
 *${source.name}*
+-----------------------------
+*Precio:* \`${amount.toFixed(2)}\`${source.symbol}
+*Cambio:* ${sign}${trend.amount.toFixed(2)}${source.symbol}
+*Tendencia:* ${trend.emoji} ${sign}${trend.percentage.toFixed(2)}%
+*Hora:* ${hour}
+*Fuente:* [${source.link.label}](${source.link.url})
 
-*Precio:* \`${amount}\`${source.symbol}
-*Cambio:* ${sign}${trend.amount}${source.symbol}
-*Tendencia:* ${trend.emoji} ${sign}${trend.percentage}%
-*Fuente:* \`${source.link.label}\`
-
-${date}  ${hour}
 `
+  }
 
-  await bot.telegram.sendPhoto(
+  // Send message
+  await bot.telegram.sendMessage(
     chatId,
     {
-      url: source.banner
-      // source: source.banner
+      text: message,
+      parse_mode: 'Markdown' as any
     },
     {
-      caption: message,
       disable_notification: MODE_DEV,
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [[{ text: 'Visitar Fuente', url: source.link.url }]]
-      }
+      disable_web_page_preview: true
     }
   )
 }
